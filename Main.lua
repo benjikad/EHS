@@ -10,6 +10,8 @@ return function(shared)
         task.wait()
     until shared.ready
 
+    task.wait(1)
+
     local ui = lib.new(mainUi)
 
     -- local sections = {
