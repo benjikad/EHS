@@ -3,7 +3,7 @@
 return function(themeName,shouldDownload)
     local function missing(t, f, fallback)
         if type(f) == t then return f end
-        return fallback
+        return fallback 
     end
 
     local getgenv = missing('function',getgenv,function()
