@@ -1,10 +1,13 @@
---v1.2
+--v1.3
 return function(shared)
     local create = shared.create
     local round = shared.round
 
     local theme = shared.theme
     local themes = shared.themes
+
+    local modules = shared.modules
+    local icon = modules['Icons.lua'](shared)
 
     local service = shared.service
 
@@ -48,7 +51,12 @@ return function(shared)
             Size = UDim2.new(0,100,1,0),
             BorderColor3 = theme.foreground,
             BorderSizePixel = 2,
+            Visible = false
         },mainCanvas)
+
+        local hamburgerIcon = icon.hamburgerIcon(30,true)
+        hamburgerIcon.Position = UDim2.fromOffset(3,3)
+        hamburgerIcon.Parent = mainCanvas
 
         local tween = TweenService:Create(mainCanvas,TweenInfo.new(.2,Enum.EasingStyle.Back,Enum.EasingDirection.Out),{
             Size = uiSize,
@@ -56,7 +64,7 @@ return function(shared)
         })
         tween:Play()
 
-        return mainCanvas,sidebar
+        return mainCanvas,sidebar,hamburgerIcon
     end
 
     local lib = {}
@@ -68,7 +76,7 @@ return function(shared)
         local section = {}
         section.__index = section
 
-
+        
 
         return section
     end
