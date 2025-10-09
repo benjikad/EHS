@@ -243,7 +243,10 @@ return function(themeName,shouldDownload)
         'Icons.lua'
     }
 
-    local themeName = typeof(themeName) == "string" and themeName
+    local themeName = typeof(themeName) == "string" and themeName or 'blood'
+    if shouldDownload == nil then
+        shouldDownload = true
+    end
 
     local theme = themes[themeName or '']
     local themeExists = theme~=nil
