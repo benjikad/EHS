@@ -1,4 +1,4 @@
---v1.2
+--v1.3
 return function(shared)
     local modules = shared.modules
     local theme = shared.theme
