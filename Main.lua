@@ -10,7 +10,7 @@ return function(shared)
         task.wait()
     until shared.ready
 
-    task.wait(1)
+    task.wait(1.5)
 
     local ui = lib.new(mainUi)
 
