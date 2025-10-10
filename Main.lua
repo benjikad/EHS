@@ -1,4 +1,4 @@
---v1.3
+--v1.4
 return function(shared)
     local modules = shared.modules
     local theme = shared.theme
@@ -14,13 +14,13 @@ return function(shared)
 
     local ui = lib.new(mainUi)
 
-    -- local sections = {
-    --     ui:newSection('About'),
-    --     ui:newSection('Universal'),
-    --     ui:newSection('Settings'),
-    -- }
+    local sections = {
+        ui:newSection('About'),
+        ui:newSection('Universal'),
+        ui:newSection('Settings'),
+    }
 
-    -- ui:open(sections[1])
+    ui:open(sections[1])
 
     -- sections[1]:newLabel('<b>What is this?</b>\n This is a test.',{
     --     RichText = true
