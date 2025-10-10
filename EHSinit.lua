@@ -1,5 +1,7 @@
 --executor hub
 
+local EHS_VERSION = 1.45
+
 return function(themeName,shouldDownload)
     local function missing(t, f, fallback)
         if type(f) == t then return f end
@@ -575,6 +577,8 @@ return function(themeName,shouldDownload)
         tween:Play()
 
         tween.Completed:Wait()
+
+        log('System',theme.textColorInfo,`Running on version {EHS_VERSION}!`)
 
         if not themeExists then
             log('Settings',theme.textColorWarn,`Theme "{themeName}" was not found, using "blood" as a default.`)
