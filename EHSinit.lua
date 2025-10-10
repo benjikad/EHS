@@ -3,7 +3,7 @@
 return function(themeName,shouldDownload)
     local function missing(t, f, fallback)
         if type(f) == t then return f end
-        return fallback 
+        return fallback
     end
 
     local getgenv = missing('function',getgenv,function()
@@ -131,7 +131,56 @@ return function(themeName,shouldDownload)
             ['specialColor'] = Color3.fromRGB(180, 25, 25),
             ['darkSpecialColor'] = Color3.fromRGB(100, 15, 15),
             ['specialTextColor'] = Color3.fromRGB(255, 100, 100),
-            ['textFont'] = Enum.Font.JosefinSans,
+            ['textFont'] = Enum.Font.Arial,
+            ['textTitleFont'] = Enum.Font.JosefinSans,
+        },
+        ['primeRed'] = {
+            ['foreground'] = Color3.fromRGB(60, 45, 40),
+            ['background'] = Color3.fromRGB(35, 25, 22),
+            ['midground'] = Color3.fromRGB(45, 30, 28),
+            ['accent'] = Color3.fromRGB(155, 70, 55),
+            ['textColor'] = Color3.fromRGB(245, 230, 220),
+            ['textColorWarn'] = Color3.fromRGB(210, 120, 40), 
+            ['textColorError'] = Color3.fromRGB(190, 60, 50),
+            ['textColorSuccess'] = Color3.fromRGB(110, 170, 90), 
+            ['textColorInfo'] = Color3.fromRGB(85, 105, 175),
+            ['specialColor'] = Color3.fromRGB(160, 65, 55),
+            ['darkSpecialColor'] = Color3.fromRGB(100, 45, 38),
+            ['specialTextColor'] = Color3.fromRGB(200, 95, 80),
+            ['textFont'] = Enum.Font.Arial,
+            ['textTitleFont'] = Enum.Font.JosefinSans,
+        },
+        ['agua'] = {
+            ['foreground'] = Color3.fromRGB(15, 25, 25), 
+            ['background'] = Color3.fromRGB(5, 10, 10),
+            ['midground'] = Color3.fromRGB(10, 18, 18),
+            ['accent'] = Color3.fromRGB(20, 140, 140),
+            ['textColor'] = Color3.fromRGB(238, 250, 255),
+            ['textColorWarn'] = Color3.fromRGB(255, 168, 0),
+            ['textColorError'] = Color3.fromRGB(255, 64, 64),
+            ['textColorSuccess'] = Color3.fromRGB(0, 255, 200),
+            ['textColorInfo'] = Color3.fromRGB(64, 200, 235),
+            ['specialColor'] = Color3.fromRGB(25, 180, 180),
+            ['darkSpecialColor'] = Color3.fromRGB(15, 100, 100),
+            ['specialTextColor'] = Color3.fromRGB(100, 255, 255),
+            ['textFont'] = Enum.Font.Arial,
+            ['textTitleFont'] = Enum.Font.JosefinSans,
+        },
+        ['desert'] = {
+            ['foreground'] = Color3.fromRGB(28, 22, 15), 
+            ['background'] = Color3.fromRGB(12, 9, 5),
+            ['midground'] = Color3.fromRGB(20, 16, 10),
+            ['accent'] = Color3.fromRGB(180, 120, 40),
+            ['textColor'] = Color3.fromRGB(255, 248, 238),
+            ['textColorWarn'] = Color3.fromRGB(255, 168, 0),
+            ['textColorError'] = Color3.fromRGB(255, 64, 64),
+            ['textColorSuccess'] = Color3.fromRGB(160, 200, 80),
+            ['textColorInfo'] = Color3.fromRGB(200, 160, 100),
+            ['specialColor'] = Color3.fromRGB(210, 140, 60),
+            ['darkSpecialColor'] = Color3.fromRGB(120, 80, 30),
+            ['specialTextColor'] = Color3.fromRGB(255, 200, 120),
+            ['textFont'] = Enum.Font.Arial,
+            ['textTitleFont'] = Enum.Font.JosefinSans,
         },
     }
 
@@ -296,7 +345,7 @@ return function(themeName,shouldDownload)
         Position = UDim2.fromOffset(35,2),
         Size = UDim2.new(1,-45,0,35),
         Text = 'EHS',
-        Font = theme.textFont,
+        Font = theme.textTitleFont,
         TextXAlignment = Enum.TextXAlignment.Left,
         TextYAlignment = Enum.TextYAlignment.Center,
     },mainFrame)
