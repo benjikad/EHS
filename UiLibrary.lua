@@ -64,7 +64,8 @@ return function(shared)
         local sideList = create('UIListLayout',{
             FillDirection = Enum.FillDirection.Vertical,
             Padding = UDim.new(0,5),
-            HorizontalAlignment = Enum.HorizontalAlignment.Center
+            HorizontalAlignment = Enum.HorizontalAlignment.Center,
+            SortOrder = Enum.SortOrder.LayoutOrder
         },sideScr)
         
         local hamburgerIcon = icon.hamburgerIcon(30,true)
@@ -85,13 +86,16 @@ return function(shared)
         })
         tween:Play()
         
-        local dark = create('Frame',{
+        local dark = create('TextButton',{
             BackgroundTransparency = 1,
             BackgroundColor3 = Color3.new(0,0,0),
             Size = UDim2.fromScale(1,1),
             BorderSizePixel = 0,
             ZIndex = 3,
-            Name = 'DarkOverlay'
+            Name = 'DarkOverlay',
+            AutoButtonColor = false,
+            Text = '',
+            Interactable = false,
         },mainCanvas)
         
         return mainCanvas,sidebar,sideScr,hamburgerIcon,dark
@@ -110,7 +114,7 @@ return function(shared)
         round(section,UDim.new(0,8))
         
         local sectionScr = create('ScrollingFrame',{
-            Size = UDim2.new(1,-10,1,-40),
+            Size = UDim2.new(1,-10,1,-20),
             Position = UDim2.new(.5,0,.5,0),
             AnchorPoint = Vector2.new(.5,.5),
             BackgroundTransparency = 1,
@@ -119,6 +123,13 @@ return function(shared)
             BorderSizePixel = 0,
             CanvasSize = UDim2.new(),
         },section)
+
+        local canvasList = create('UIListLayout',{
+            FillDirection = Enum.FillDirection.Vertical,
+            Padding = UDim.new(0,5),
+            HorizontalAlignment = Enum.HorizontalAlignment.Center,
+            SortOrder = Enum.SortOrder.LayoutOrder
+        },sectionScr)
         
         local sectionOpen = create('TextButton',{
             Text = '',
@@ -166,9 +177,71 @@ return function(shared)
             Name = 'SectionText'
         },sectionOpen)
         
-        return section,sectionOpen
+        return section,sectionOpen,sectionScr
     end
     
+    local function createItem()
+        local item = create('TextButton',{
+            BackgroundTransparency = 0,
+            BackgroundColor3 = theme.midground,
+            Size = UDim2.new(1,-10,0,0),
+            BorderSizePixel = 0,
+            LayoutOrder = 1,
+            AutoButtonColor = false,
+            Text = '',
+            AutomaticSize = Enum.AutomaticSize.Y
+        })
+
+        local list = create('UIListLayout',{
+            FillDirection = Enum.FillDirection.Vertical,
+            Padding = UDim.new(0,5),
+            HorizontalAlignment = Enum.HorizontalAlignment.Center,
+            SortOrder = Enum.SortOrder.LayoutOrder
+        },item)
+        
+        local bumperTop = create('Frame',{
+            BackgroundTransparency = 1,
+            Size = UDim2.fromOffset(0,0),
+            BorderSizePixel = 0,
+            LayoutOrder = 1,
+        },item)
+        
+        local bumperBottom = create('Frame',{
+            BackgroundTransparency = 1,
+            Size = UDim2.fromOffset(0,0),
+            BorderSizePixel = 0,
+            LayoutOrder = 3,
+        },item)
+
+        local holder = create('Frame',{
+            BackgroundTransparency = 1,
+            Size = UDim2.new(1,0,0,0),
+            AutomaticSize = Enum.AutomaticSize.Y,
+            BorderSizePixel = 0,
+            LayoutOrder = 2,
+            Name = 'Holder'
+        },item)
+        
+        local text = create('TextLabel',{
+            BackgroundTransparency = 1,
+            Size = UDim2.new(1,-10,0,0),
+            Position = UDim2.fromOffset(5,0),
+            AutomaticSize = Enum.AutomaticSize.Y,
+            TextWrapped = true,
+            BorderSizePixel = 0,
+            LayoutOrder = 2,
+            Text = 'New Label',
+            TextTransparency = 0,
+            TextColor3 = theme.textColor,
+            Font = theme.textFont,
+            TextSize = 16,
+            Name = 'SectionText',
+            TextXAlignment = Enum.TextXAlignment.Left,
+        },holder)
+
+        return item, text
+    end
+
     local lib = {}
     lib.__index = lib
     
@@ -176,7 +249,6 @@ return function(shared)
         tweenDuration = tweenDuration or 0.3
         local newTheme = themes[themeName]
         if not newTheme then
-            warn("Theme '"..tostring(themeName).."' not found!")
             return
         end
         
@@ -271,16 +343,34 @@ return function(shared)
         local section = {}
         section.__type = 'EHS_SECTION'
         
-        local sectionCanvas,sectionOpen = constructSectionUi(ui,name)
+        local sectionCanvas,sectionOpen,sectionScr = constructSectionUi(ui,name)
         section.canvas = sectionCanvas
         section.open = sectionOpen
+        section.scrl = sectionScr
         
         sectionOpen.Parent = ui.sidebarScr
+        
+        sectionOpen.LayoutOrder = #ui.sections
         sectionOpen.MouseButton1Click:Connect(function()
             ui:open(section)
         end)
         
-        table.insert(self.sections, section)
+        table.insert(ui.sections, section)
+
+        function section:newLabel(txt,props)
+            local hold,text = createItem()
+            text.Text = txt
+
+            if typeof(props) == 'table' then
+                for prop,val in props do
+                    pcall(function()
+                        text[prop] = val
+                    end)
+                end
+            end
+
+            hold.Parent = self.scrl
+        end
         
         return section
     end
@@ -327,15 +417,26 @@ return function(shared)
         self.sidebarScr = sidebarScr
         self.sidebarButton = sidebarButton
         self.sidebarOpen = false
+
+        dark.MouseButton1Click:Connect(function()
+            if dark.Transparency ~= 1 then
+                self.sidebarOpen = false
+                TweenService:Create(sidebar,TweenInfo.new(.15),{Position = UDim2.fromOffset(-160,0)}):Play()
+                TweenService:Create(dark,TweenInfo.new(.15),{BackgroundTransparency = 1}):Play()
+                dark.Interactable = false
+            end
+        end)
         
         sidebarButton.MouseButton1Click:Connect(function()
             self.sidebarOpen = not self.sidebarOpen
             if self.sidebarOpen then
                 TweenService:Create(sidebar,TweenInfo.new(.15),{Position = UDim2.fromOffset(0,0)}):Play()
                 TweenService:Create(dark,TweenInfo.new(.15),{BackgroundTransparency = .75}):Play()
+                dark.Interactable = true
             else
                 TweenService:Create(sidebar,TweenInfo.new(.15),{Position = UDim2.fromOffset(-160,0)}):Play()
                 TweenService:Create(dark,TweenInfo.new(.15),{BackgroundTransparency = 1}):Play()
+                dark.Interactable = false
             end
         end)
         
