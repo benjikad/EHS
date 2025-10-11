@@ -1,4 +1,4 @@
---v1.4
+--v1.5
 return function(shared)
     local modules = shared.modules
     local theme = shared.theme
@@ -22,9 +22,9 @@ return function(shared)
 
     ui:open(sections[1])
 
-    -- sections[1]:newLabel('<b>What is this?</b>\n This is a test.',{
-    --     RichText = true
-    -- })
+    sections[1]:newLabel('<b>What is this?</b>\n This is a test.',{
+        RichText = true
+    })
 
     -- sections[3]:newButton('Something broken?','Relaunch EHS',function()
     --     print('UHH this doesnt work yet..')
