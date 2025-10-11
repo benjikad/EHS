@@ -294,6 +294,23 @@ return function(themeName,shouldDownload)
         'Icons.lua'
     }
 
+    local usedConf = false
+
+    if themeName == nil and fileSupport then
+        pcall(function()
+            if isfolder('EHS') and isfile('EHS/conf.ini') then
+                local suc,res = readfile('EHS/conf.ini',true)
+
+                if typeof(res) == 'string' then
+                    local confTheme = res:split('\n')[1]
+
+                    themeName = confTheme
+                    usedConf = true
+                end
+            end
+        end)
+    end
+
     local themeName = typeof(themeName) == "string" and themeName or 'blood'
     if shouldDownload == nil then
         shouldDownload = true
@@ -302,6 +319,10 @@ return function(themeName,shouldDownload)
     local theme = themes[themeName or '']
     local themeExists = theme~=nil
     theme = theme or themes["blood"]
+
+    if not themeExists and usedConf then
+        writefile('EHS/conf.ini','blood')
+    end
 
     local _parent = gethui() or CoreGui
 
@@ -364,6 +385,7 @@ return function(themeName,shouldDownload)
         Position = UDim2.new(.5,0,.5,15),
         BackgroundColor3 = theme.midground,
         ScrollBarThickness = 6,
+        BorderSizePixel = 0,
     },mainFrame)
 
     round(consoleScr,UDim.new(0,8))
@@ -487,6 +509,10 @@ return function(themeName,shouldDownload)
         local s,e = pcall(function()
             if not isfolder('EHS') then
                 makefolder('EHS')
+            end
+
+            if not isfile('EHS/conf.ini') then
+                writefile('EHS/conf.ini','blood')
             end
 
             for _,url in urls do
