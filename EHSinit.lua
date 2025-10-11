@@ -1,6 +1,6 @@
 --executor hub
 
-local EHS_VERSION = 1.45
+local EHS_VERSION = 1.5
 
 return function(themeName,shouldDownload)
     local function missing(t, f, fallback)
